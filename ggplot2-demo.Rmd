@@ -1,0 +1,179 @@
+---
+title: "ggplot2 demo"
+subtitle: "Class 8"
+author: "Maxwell Austensen"
+date: "2018-10-28 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE, fig.height = 5, fig.width = 7)
+library(tidyverse)
+mtcars <- as_tibble(mtcars)
+```
+
+
+class: center, middle
+
+# Plotting with `ggplot2` in **R**
+
+---
+Here is a sample dataset we'll be using for some examples.
+```{r tidy=FALSE}
+mtcars
+```
+
+---
+
+```{r eval=FALSE, tidy=FALSE}
+ggplot(data = mtcars) #<<
+```
+
+Every plot begins with the function `ggplot()` and providing the dataframe you want to use. 
+---
+
+```{r eval=FALSE, tidy=FALSE}
+ggplot(data = mtcars) + 
+  aes(x = mpg, y = disp) #<<
+```
+
+The second part of every plot is to specify the mapping of columns form the dataframe to aesthetic elements of the plot. This is done with the function `aes()`. Every function call for a ggplot2 plot is added together with `+`.
+
+In the `aes()` function some of the most common aesthetic elements are:
+
+* `x` for the x-axis
+* `y` for the y-axis
+* `color` for the color of data elements (lines, points, and outline of shapes)
+* `fill` for the fill color of shapes
+* `label` for data labels
+* `group` for separate data elements by some grouping variable
+* `shape` for the shape of data points
+* `linetype` for the style
+---
+
+```{r eval=FALSE, tidy=FALSE}
+ggplot(data = mtcars) + 
+  aes(x = mpg, y = disp) + 
+  geom_point() #<<
+```
+
+The third main element of every plot is the geometries, which determine how the data is displayed on the plot. The geometries are determined by the `geom_*()` functions. Some examples are:
+
+* `geom_point()` for scatter plot
+* `geom_line()` for line graphs
+* `geom_bar()` for bar graphs, usually representing the number of rows by some grouping column
+* `geom_col()` for bar graphs where the height of the bars is specified with a column of the dataframe
+* `geom_histogram()` for histograms
+* `geom_sf()` for a type of spatial dataframe called "simple features" for creating maps, which we'll cover later
+* and many more!
+
+---
+
+```{r tidy=FALSE}
+ggplot(data = mtcars) + 
+  aes(x = mpg, y = disp) + 
+  geom_point()
+```
+
+---
+class: center, middle
+
+# Some examples
+---
+
+```{r tidy=FALSE}
+ggplot(mtcars) + 
+  aes(x = mpg, y = wt) + #<<
+  geom_point()
+```
+
+---
+
+```{r tidy=FALSE}
+ggplot(mtcars) + 
+  aes(x = mpg, y = wt, color = cyl) + #<<
+  geom_point()
+```
+
+---
+
+```{r tidy=FALSE}
+ggplot(mtcars) + 
+  aes(x = mpg, y = wt, color = factor(cyl)) + #<<
+  geom_point()
+```
+
+---
+
+```{r tidy=FALSE}
+ggplot(mtcars) + 
+  aes(x = mpg, y = wt, color = factor(cyl), size = disp) + #<<
+  geom_point()
+```
+---
+
+```{r tidy=FALSE}
+ggplot(mtcars) + 
+  aes(x = mpg, y = wt, size = disp) + #<<
+  geom_point()
+```
+
+---
+```{r tidy=FALSE}
+ggplot(mtcars) + 
+  aes(x = mpg, y = wt) + 
+  geom_point() #<<
+```
+
+---
+```{r tidy=FALSE}
+ggplot(mtcars) + 
+  aes(x = cyl) + 
+  geom_bar() #<<
+```
+
+---
+
+```{r message=FALSE, tidy=FALSE}
+ggplot(mtcars) + 
+  aes(x = mpg) + 
+  geom_histogram() #<<
+```
+
+---
+
+```{r tidy=FALSE}
+ggplot(mtcars) + 
+  aes(y = mpg) + 
+  geom_boxplot() #<<
+```
+
+---
+
+You can apply titles and labels to you plot using `labs()`:
+
+```{r fig.height=4, fig.width=8, tidy=FALSE}
+ggplot(mtcars) + 
+  aes(x = mpg, y = wt, color = factor(cyl)) +
+  geom_point() +
+  labs( #<<
+    title = "Miles/Gallon by Weight of Car", #<<
+    subtitle = "1973-74 models", #<<
+    x = "Weight", #<<
+    y = "Miles per Gallon", #<<
+    color = "Number of cylinders", #<<
+    caption = "Source: 1974 Motor Trend US magazine" #<<
+  ) #<<
+```
+
+---
+class: center, middle
+
+# Live Demo!
+
